@@ -1,8 +1,8 @@
 {
-  "name": "@js-templates/typescript-library",
+  "name": "@nzod/z",
   "version": "0.0.0-set-by-ci",
-  "description": "Your Library Description",
-  "author": "Your Name",
+  "description": "Zod extended for better server-side usage",
+  "author": "Evgeny Zakharov",
   "main": "dist/index.js",
   "exports": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -10,7 +10,7 @@
   "files": [
     "dist/*"
   ],
-  "repository": "git@github.com:js-templates/typescript-library.git",
+  "repository": "git@github.com:nzod/z.git",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
@@ -27,7 +27,9 @@
     "prepack": "pinst --disable",
     "postpack": "pinst --enable"
   },
-  "dependencies": {},
+  "dependencies": {
+    "zod": "^3.17.10"
+  },
   "devDependencies": {
     "@rollup/plugin-typescript": "^8.3.4",
     "@types/jest": "^28.1.6",

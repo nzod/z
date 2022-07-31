@@ -1,82 +1,39 @@
 <p align="center">
-  <img src="logo.svg" width="200" align="center" alt="Typescript Library Logo" style="max-width: 100%;" />
-  <h1></h1>
+  <br/>
   <p align="center">
-    ✨ Your Library Description ✨
+    ✨ Zod extended for better server-side usage ✨
   </p>
 </p>
 <br/>
 <p align="center">
-  <a href="https://github.com/js-templates/typescript-library/actions?query=branch%3Amain">
-    <img src="https://github.com/js-templates/typescript-library/actions/workflows/test-and-build.yml/badge.svg?event=push&branch=main" alt="@js-templates/typescript-library CI Status" />
+  <a href="https://github.com/nzod/z/actions?query=branch%3Amain">
+    <img src="https://github.com/nzod/z/actions/workflows/test-and-build.yml/badge.svg?event=push&branch=main" alt="@nzod/z CI Status" />
   </a>
   <a href="https://opensource.org/licenses/MIT" rel="nofollow">
-    <img src="https://img.shields.io/github/license/js-templates/typescript-library" alt="License">
+    <img src="https://img.shields.io/github/license/nzod/z" alt="License">
   </a>
-  <a href="https://www.npmjs.com/package/@js-templates/typescript-library" rel="nofollow">
-    <img src="https://img.shields.io/npm/dw/@js-templates/typescript-library.svg" alt="npm">
+  <a href="https://www.npmjs.com/package/@nzod/z" rel="nofollow">
+    <img src="https://img.shields.io/npm/dw/@nzod/z.svg" alt="npm">
   </a>
-  <a href="https://www.npmjs.com/package/@js-templates/typescript-library" rel="nofollow">
-    <img src="https://img.shields.io/github/stars/js-templates/typescript-library" alt="stars">
+  <a href="https://www.npmjs.com/package/@nzod/z" rel="nofollow">
+    <img src="https://img.shields.io/github/stars/nzod/z" alt="stars">
   </a>
 </p>
-
-## Template Features
-
-- 🚀 Blazingly fast and easy installation
-- 💡 CI workflows configured for changelogs and release/prerelease cycles
-- 🧱 Perfect and easy-to-support tooling setup without any conflicts with CI environment
-- 📚 Well-documented conventions for project maintaining (commits, pull-requests, branches)
-
-## Using template
-
-### 1. Replace everything
-
-1. Replace all `@js-templates/typescript-library` entries with your library name
-2. Replace all `js-templates/typescript-library` entries with your repo path
-3. Replace all `Your Library Description` entries with your library description
-4. Replace all `Your Name` entries with your library name
-5. Update `logo.svg`
-6. Update logo's `alt`
-
-### 2. Add secrets
-
-- `NPM_TOKEN`
-- `FULL_ACCESS_GITHUB_TOKEN` if you plan to set up [the branch protection](#add-branch-protection)
-
-### 3. (optional) Set up branch protection
-
-1. Go to `Settings` > `Branches` > `Add rule`
-2. Specify `main` branch
-3. Enable the following options:
-   - Require a pull request before merging (without approvals)
-   - Require status checks to pass before merging (you need to run them at least once to appear):
-     - `test-and-build`
-     - `pr-labeler`
-   - Include administrators
-   - Allow force pushes
-4. Repeat, but using `release/*` instead of `main`
-5. [Create a new Personal Access Token](https://github.com/settings/tokens/new) with `repo` permissions
-6. Use it as a new Secret named `FULL_ACCESS_GITHUB_TOKEN`  
-   It's needed to bypass the branch protection on CI runs
-
-### 4. The last step
-
-Remove **Template Features** and **Using Template** sections from README
 
 ## Before you start
 
 The README on `main` branch may contain some unreleased changes.
 
-Go to [`release/latest`](https://github.com/js-templates/typescript-library/tree/release/latest) branch to see the actual README for the latest version from NPM.
+Go to [`release/latest`](https://github.com/nzod/z/tree/release/latest) branch to see the actual README for the latest version from NPM.
 
 ## Navigation
 
 - [Installation](#installation)
+- [Usage](#usage)
 - [Contrubuting](#contributing)
 - [Maintenance](#maintenance)
   - [Regular flow](#regular-flow)
-  - [Prerelease from](#prerelease-flow)
+  - [Prerelease flow](#prerelease-flow)
   - [Conventions](#conventions)
 
 ## Installation
@@ -84,13 +41,188 @@ Go to [`release/latest`](https://github.com/js-templates/typescript-library/tree
 NPM:
 
 ```sh
-npm install @js-templates/typescript-library
+npm install @nzod/z
 ```
 
 Yarn:
 
 ```sh
-yarn add @js-templates/typescript-library
+yarn add @nzod/z
+```
+
+## Usage
+
+N'Zod is a wrapper above `zod` library, so you can use `zod` features as your did it before - just replace your `zod` imports with `@nzod/z`.
+
+The main library purpose is to help you with the user input validation. It can be done more accurately by using our custom schemas and methods.
+
+### ZodDateString
+
+In HTTP, we always accept Dates as strings. But default Zod doesn't have methods to validate such type of strings. `ZodDateString` was created to address this issue.
+
+```ts
+// 1. Expect user input to be a "string" type
+// 2. Expect user input to be a valid date (by using new Date)
+z.dateString()
+
+// Cast to Date instance
+// (use it on end of the chain, but before "describe")
+z.dateString().cast()
+
+// Expect string in "full-date" format from RFC3339
+z.dateString().format('date')
+
+// [default format]
+// Expect string in "date-time" format from RFC3339
+z.dateString().format('date-time')
+
+// Expect date to be the past
+z.dateString().past()
+
+// Expect date to be the future
+z.dateString().future()
+
+// Expect year to be greater or equal to 2000
+z.dateString().minYear(2000)
+
+// Expect year to be less or equal to 2025
+z.dateString().maxYear(2025)
+
+// Expect day to be a week day
+z.dateString().weekDay()
+
+// Expect year to be a weekend
+z.dateString().weekend()
+```
+
+Valid `date` format examples:
+
+- `2022-05-15`
+
+Valid `date-time` format examples:
+
+- `2022-05-02:08:33Z`
+- `2022-05-02:08:33.000Z`
+- `2022-05-02:08:33+00:00`
+- `2022-05-02:08:33-00:00`
+- `2022-05-02:08:33.000+00:00`
+
+Errors:
+
+- `invalid_date_string` - invalid date
+
+- `invalid_date_string_format` - wrong format
+
+  Payload:
+
+  - `expected` - `'date' | 'date-time'`
+
+- `invalid_date_string_direction` - not past/future
+
+  Payload:
+
+  - `expected` - `'past' | 'future'`
+
+- `invalid_date_string_day` - not weekDay/weekend
+
+  Payload:
+
+  - `expected` - `'weekDay' | 'weekend'`
+
+- `too_small` with `type === 'date_string_year'`
+- `too_big` with `type === 'date_string_year'`
+
+### ZodPassword
+
+`ZodPassword` is a string-like type, just like the `ZodDateString`. As you might have guessed, it's intended to help you with password schemas definition.
+
+Also, `ZodPassword` has a more accurate OpenAPI conversion, comparing to regular `.string()`: it has `password` format and generated RegExp string for `pattern`.
+
+```ts
+// Expect user input to be a "string" type
+z.password()
+
+// Expect password length to be greater or equal to 8
+z.password().min(8)
+
+// Expect password length to be less or equal to 100
+z.password().max(100)
+
+// Expect password to have at least one digit
+z.password().atLeastOne('digit')
+
+// Expect password to have at least one lowercase letter
+z.password().atLeastOne('lowercase')
+
+// Expect password to have at least one uppercase letter
+z.password().atLeastOne('uppercase')
+
+// Expect password to have at least one special symbol
+z.password().atLeastOne('special')
+```
+
+Errors:
+
+- `invalid_password_no_digit`
+- `invalid_password_no_lowercase`
+- `invalid_password_no_uppercase`
+- `invalid_password_no_special`
+- `too_small` with `type === 'password'`
+- `too_big` with `type === 'password'`
+
+### Json Schema
+
+> Created for `@nzod/prisma`
+
+```ts
+z.json()
+```
+
+### "use" function
+
+> Created for custom schemas in `@nzod/prisma`
+
+Just returns the same Schema
+
+```ts
+z.use(MySchema)
+```
+
+### Extended Zod Errors
+
+Currently, we use `custom` error code due to some Zod limitations (`errorMap` priorities)
+
+Therefore, the error details is located inside `params` property:
+
+```ts
+const error = {
+  code: 'custom',
+  message: 'Invalid date, expected it to be the past',
+  params: {
+    isNZod: true,
+    code: 'invalid_date_string_direction',
+
+    // payload is always located here in a flat view
+    expected: 'past',
+  },
+  path: ['date'],
+}
+```
+
+### Working with custom errors on the client side
+
+The library includes some helpers, that can be used to detect custom N'Zod issues and process them the way you want.
+
+```ts
+import { isNzodIssue, NZodIssue, ZodIssue } from '@nzod/z'
+
+function mapToFormErrors(issues: ZodIssue[]) {
+  for (const issue of issues) {
+    if (isNzodIssue(issue)) {
+      // issue is NZodIssue
+    }
+  }
+}
 ```
 
 ## Contributing
