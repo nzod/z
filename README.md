@@ -30,6 +30,12 @@ Go to [`release/latest`](https://github.com/nzod/z/tree/release/latest) branch t
 
 - [Installation](#installation)
 - [Usage](#usage)
+  - [ZodDateString](#zoddatestring)
+  - [ZodPassword](#zodpassword)
+  - [Json Schema](#json-schema)
+  - ["use" function](#use-function)
+  - [Extended Zod Errors](#extended-zod-errors)
+  - [Working with custom errors on the client side](#working-with-custom-errors-on-the-client-side)
 - [Contrubuting](#contributing)
 - [Maintenance](#maintenance)
   - [Regular flow](#regular-flow)
