@@ -6,9 +6,10 @@
   "main": "dist/index.js",
   "exports": "./dist/index.js",
   "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "types": "./types.d.ts",
   "files": [
-    "dist/*"
+    "dist/*",
+    "types.d.ts"
   ],
   "repository": "git@github.com:nzod/z.git",
   "license": "MIT",
