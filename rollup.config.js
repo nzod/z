@@ -27,7 +27,7 @@ const bundle = (input, { plugins = [], ...config }) =>
 
 const config = defineConfig([
   /* Compiled JS (CommonJS, ESM) */
-  bundle(src('index.ts'), {
+  bundle(src('exports/everything.ts'), {
     plugins: [TYPECHECK && typescript(), esbuild(), MINIFY && terser()],
     output: [
       {
@@ -42,11 +42,11 @@ const config = defineConfig([
   }),
 
   /* TS declarations */
-  bundle(src('index.ts'), {
+  bundle(src('exports/only-override.ts'), {
     plugins: [dts()],
     output: [
       {
-        file: pkg.types,
+        file: dist('only-override.d.ts'),
         format: 'es',
       },
     ],
